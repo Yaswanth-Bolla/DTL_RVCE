@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Chain Multiplication Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #c1f5d1, #83b57b);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #1c3027;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            background: #d4cac1;
+            color: #090909;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .option:hover {
+            background: #ff7e5f;
+            transform: scale(1.05);
+        }
+        .correct {
+            background: #28a745 !important;
+            color: #fff;
+        }
+        .incorrect {
+            background: #dc3545 !important;
+            color: #fff;
+        }
+        .reveal {
+            background: #ffc107 !important;
+            color: #000;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #333;
+        }
+        .scorecard {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+        }
+        .scorecard h2 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #5fffbc;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #4eddaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Matrix Chain Multiplication Quiz</h1>
+        <div id="quiz"></div>
+        <button id="shuffle-btn">Shuffle Questions</button>
+        <button id="submit-btn">Submit Quiz</button>
+        <button id="reveal-btn">Reveal Answers</button>
+        <div class="scorecard">
+            <h2>Score Card</h2>
+            <p id="score">...</p>
+            <p id="correct">Correct Answers: ...</p>
+            <p id="incorrect">Incorrect Answers: ...</p>
+        </div>
+        <footer>&copy; 2024 Matrix Chain Multiplication. All rights reserved.</footer>
+    </div>
+
+    <script>
+        const originalQuestions = [
+            {
+                question: "What is the main goal of the matrix chain multiplication problem?",
+                options: [
+                    "To maximize the number of scalar multiplications",
+                    "To minimize the number of scalar multiplications",
+                    "To find the inverse of the matrices",
+                    "To sort the matrices in ascending order"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which algorithm is commonly used to solve the matrix chain multiplication problem?",
+                options: [
+                    "Greedy algorithm",
+                    "Dynamic programming",
+                    "Divide and conquer",
+                    "Brute force"
+                ],
+                answer: 1
+            },
+            {
+                question: "What is the time complexity of the dynamic programming solution for matrix chain multiplication?",
+                options: [
+                    "O(n)",
+                    "O(n^2)",
+                    "O(n^3)",
+                    "O(2^n)"
+                ],
+                answer: 2
+            },
+            {
+                question: "In matrix chain multiplication, what does the term 'scalar multiplication' refer to?",
+                options: [
+                    "Multiplying a matrix by a scalar value",
+                    "Multiplying two individual elements",
+                    "Adding two matrices",
+                    "Transposing a matrix"
+                ],
+                answer: 1
+            },
+            {
+                question: "What is the significance of parenthesization in matrix chain multiplication?",
+                options: [
+                    "It determines the order of multiplication",
+                    "It affects the final result of multiplication",
+                    "It changes the dimensions of the matrices",
+                    "It has no impact on the multiplication process"
+                ],
+                answer: 0
+            },
+            {
+                question: "Which of the following is NOT a step in solving the matrix chain multiplication problem using dynamic programming?",
+                options: [
+                    "Defining the structure of an optimal solution",
+                    "Recursively defining the value of an optimal solution",
+                    "Computing the value of an optimal solution in a bottom-up fashion",
+                    "Sorting the matrices based on their dimensions"
+                ],
+                answer: 3
+            },
+            {
+                question: "What is the space complexity of the dynamic programming solution for matrix chain multiplication?",
+                options: [
+                    "O(n)",
+                    "O(n^2)",
+                    "O(n^3)",
+                    "O(2^n)"
+                ],
+                answer: 1
+            },
+            {
+                question: "In the context of matrix chain multiplication, what does the term 'optimal substructure' mean?",
+                options: [
+                    "The best way to arrange matrices for multiplication",
+                    "The optimal solution to a problem contains optimal solutions to its subproblems",
+                    "The most efficient algorithm for matrix multiplication",
+                    "The ideal dimensions for matrices in a chain"
+                ],
+                answer: 1
+            },
+            {
+                question: "What is the base case in the recursive solution of the matrix chain multiplication problem?",
+                options: [
+                    "When there is only one matrix",
+                    "When there are two matrices",
+                    "When all matrices have the same dimensions",
+                    "When the chain cannot be multiplied further"
+                ],
+                answer: 0
+            },
+            {
+                question: "Which of the following applications does NOT typically use matrix chain multiplication?",
+                options: [
+                    "Parsing of context-free grammars",
+                    "Optimization of database query operations",
+                    "Simple arithmetic calculations",
+                    "Solving systems of linear equations"
+                ],
+                answer: 2
+            }
+        ];
+
+        let questions = JSON.parse(JSON.stringify(originalQuestions));
+        let userAnswers = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function displayQuiz() {
+            const quizContainer = document.getElementById('quiz');
+            quizContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+                const optionsDiv = document.createElement('div');
+                optionsDiv.classList.add('options');
+                q.options.forEach((option, optionIndex) => {
+                    const optionButton = document.createElement('button');
+                    optionButton.classList.add('option');
+                    optionButton.textContent = option;
+                    optionButton.onclick = () => selectOption(index, optionIndex);
+                    optionsDiv.appendChild(optionButton);
+                });
+                questionDiv.appendChild(optionsDiv);
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            userAnswers[questionIndex] = optionIndex;
+            const options = document.querySelectorAll(`.question:nth-child(${questionIndex + 1}) .option`);
+            options.forEach((opt, idx) => {
+                if (idx === optionIndex) {
+                    opt.style.background = '#4CAF50';
+                } else {
+                    opt.style.background = '#feb47b';
+                }
+            });
+        }
+
+        function shuffleQuestions() {
+            questions = JSON.parse(JSON.stringify(originalQuestions)); // Deep copy
+            shuffleArray(questions);
+            questions.forEach(q => shuffleArray(q.options));
+            userAnswers = [];
+            displayQuiz();
+            document.querySelector('.scorecard').style.display = 'none';
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            let correct = 0;
+            let incorrect = 0;
+            questions.forEach((q, index) => {
+                const correctAnswerIndex = q.options.indexOf(originalQuestions[originalQuestions.findIndex(oq => oq.question === q.question)].options[originalQuestions[originalQuestions.findIndex(oq => oq.question === q.question)].answer]);
+                if (userAnswers[index] === correctAnswerIndex) {
+                    score += 1;
+                    correct += 1;
+                } else {
+                    incorrect += 1;
+                }
+            });
+            document.querySelector('.scorecard').style.display = 'block';
+            document.getElementById('score').textContent = `Score: ${score} / ${questions.length}`;
+            document.getElementById('correct').textContent = `Correct Answers: ${correct}`;
+            document.getElementById('incorrect').textContent = `Incorrect Answers: ${incorrect}`;
+        }
+
+        function revealAnswers() {
+            questions.forEach((q, questionIndex) => {
+                const options = document.querySelectorAll(`.question:nth-child(${questionIndex + 1}) .option`);
+                const correctAnswerIndex = q.options.indexOf(originalQuestions[originalQuestions.findIndex(oq => oq.question === q.question)].options[originalQuestions[originalQuestions.findIndex(oq => oq.question === q.question)].answer]);
+                options.forEach((opt, optionIndex) => {
+                    if (optionIndex === correctAnswerIndex) {
+                        opt.classList.add('reveal');
+                    } else {
+                        opt.classList.remove('correct', 'incorrect');
+                    }
+                });
+            });
+        }
+
+        document.getElementById('shuffle-btn').addEventListener('click', shuffleQuestions);
+        document.getElementById('submit-btn').addEventListener('click', submitQuiz);
+        document.getElementById('reveal-btn').addEventListener('click', revealAnswers);
+
+        // Initial shuffle and display
+        shuffleQuestions();
+    </script>
+</body>
+</html>

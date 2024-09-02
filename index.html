@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Chain Multiplication - Introduction</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .video-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+            background-color: rgba(0, 150, 136, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .video-controls label {
+            color: white;
+            margin-bottom: 5px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-bottom: 15px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #004d40;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #00796b;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .speed-control {
+            width: 100%;
+            margin-top: 10px;
+        }
+        #speedSlider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 15px;
+            border-radius: 5px;
+            background: #004d40;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+        #speedSlider:hover {
+            opacity: 1;
+        }
+        #speedSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #00796b;
+            cursor: pointer;
+        }
+        #speedSlider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #00796b;
+            cursor: pointer;
+        }
+        header {
+            background-color: rgba(0, 150, 136, 0.2);
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .header-text {
+            font-size: 3em;
+            margin: 0;
+            color: #6bb9af;
+            position: relative;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .header-text::before, .header-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #00ff00;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            animation: glitch 1s infinite;
+        }
+        .header-text::after {
+            color: #ff00ff;
+            clip: rect(0, 0, 0, 0);
+            animation: glitch 1s infinite reverse;
+        }
+        @keyframes glitch {
+            0% { transform: translateX(0); opacity: 1; }
+            20% { transform: translateX(-5px); opacity: 0.7; }
+            40% { transform: translateX(5px); opacity: 0.5; }
+            60% { transform: translateX(-5px); opacity: 0.6; }
+            80% { transform: translateX(5px); opacity: 0.8; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 0 15px rgb(2, 133, 41);
+            border-radius: 8px;
+            z-index: 1;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        h2 {
+            color: #6bb9af;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .images img {
+            max-height: 40%;
+            max-width: 50%;
+            border-radius: 8px;
+            border: 2px solid #004d40;
+            margin: 10px 0;
+        }
+        .videos iframe {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 10px 0;
+        }
+        footer {
+            background-color: rgba(0, 150, 136, 0.2);
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .header-text {
+                font-size: 2em;
+            }
+            .videos iframe {
+                height: 200px;
+            }
+        }
+        .downloads a {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px 0;
+            color: #ffffff;
+            background-color: #00796b;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+        .downloads a:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <video id="backgroundVideo" class="background-video" autoplay muted loop>
+        <source src="background-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="video-controls">
+        <label for="directionToggle">Playback Direction</label>
+        <label class="switch">
+            <input type="checkbox" id="directionToggle">
+            <span class="slider"></span>
+        </label>
+        <label for="speedSlider">Playback Speed</label>
+        <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1">
+        <div id="speedValue">1x</div>
+    </div>
+
+    <header>
+        <div class="header-text" data-text="Matrix Chain Multiplication">Matrix Chain Multiplication</div>
+    </header>
+    <div class="container">
+        <div class="section" id="approaches">
+            <h2>Matrix Chain Multiplication Approaches</h2>
+            <p>Matrix Chain Multiplication is a fundamental problem in optimization that involves finding the most efficient way to multiply a sequence of matrices. There are several approaches to solving this problem:</p>
+            <ul>
+                <li><strong>Dynamic Programming:</strong> This approach breaks the problem down into simpler subproblems and solves each subproblem only once, storing the results for future use. It is highly efficient for large matrices.</li>
+                <li><strong>Greedy Approach:</strong> In some cases, a greedy algorithm might be used, though it is not always optimal. This approach makes the locally optimal choice at each stage with the hope of finding a global optimum.</li>
+                <li><strong>Divide and Conquer:</strong> This approach divides the problem into smaller subproblems, solves each subproblem independently, and combines their solutions. It’s less efficient compared to dynamic programming for this problem.</li>
+            </ul>
+        </div>
+        <div class="section images">
+            <h2>Illustrations</h2>
+            <img src="matrix_chain_illustration2.png" alt="Illustration of matrix chain multiplication approach 1">
+            <img src="matrix_chain_illustration1.png" alt="Illustration of matrix chain multiplication approach 2">
+        </div>
+        <div class="section videos">
+            <h2>Videos</h2>
+            <iframe src="https://www.youtube.com/embed/aOO67pI3h7A?si=4Le2nZQRiTYExqlT" title="Matrix Chain Multiplication Explained" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/_WncuhSJZyA?si=LxoGzLbmPND09JQd" title="Matrix Chain Multiplication Tutorial" allowfullscreen></iframe>
+        </div>
+        <div class="section downloads">
+            <h2>Download Resources</h2>
+            <a href="matrix_chain_guide.pdf" download>Download Matrix Chain Multiplication Guide</a>
+            <a href="matrix_chain_examples.pdf" download>Download Matrix Chain Multiplication Examples</a>
+        </div>
+    </div>
+    <footer>
+        All the best for your future ventures.
+    </footer>
+
+    <script>
+        const video = document.getElementById('backgroundVideo');
+        const directionToggle = document.getElementById('directionToggle');
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValue = document.getElementById('speedValue');
+
+        directionToggle.addEventListener('change', () => {
+            video.playbackRate = Math.abs(video.playbackRate) * (directionToggle.checked ? -1 : 1);
+        });
+
+        speedSlider.addEventListener('input', () => {
+            const speed = parseFloat(speedSlider.value);
+            video.playbackRate = directionToggle.checked ? -speed : speed;
+            speedValue.textContent = `${speed.toFixed(1)}x`;
+        });
+
+        // Initialize video playback
+        video.playbackRate = 1;
+    </script>
+</body>
+</html>

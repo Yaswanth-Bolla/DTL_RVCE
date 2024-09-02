@@ -1,0 +1,141 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #a5eccd, #b6dc9f);
+    color: #fff;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(16, 6, 6, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.hide {
+    display: none;
+}
+
+button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+button.correct {
+    background-color: #4caf50;
+}
+
+button.wrong {
+    background-color: #f44336;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
+}
+
+#confetti {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+#confetti.show {
+    display: block;
+}
+
+#feedback-list {
+    list-style: none;
+    padding: 0;
+}
+
+#feedback-list li {
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+#feedback-container {
+    overflow-y: auto;
+    max-height: 400px; /* Adjust as needed */
+}
+
+#feedback-container.show {
+    display: block;
+}
+
+#feedback-container.hide {
+    display: none;
+}
+
+
+#timer {
+    font-size: 20px;
+    margin: 20px 0;
+}
+
+#streak {
+    font-size: 16px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+
+#fast-answer {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #ffeb3b;
+}
+
+#feedback-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        z-index: 1000;
+        display: none;
+    }
+    
+#feedback-popup.show {
+        display: block;
+    }
+    

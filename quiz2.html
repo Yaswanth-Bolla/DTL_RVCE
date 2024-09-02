@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="quiz.css">
+<script defer data-domain="pink-kori-68.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head>
+<body>
+    <div class="container">
+        <div id="start-screen">
+            <h1>Matrix Chain Multiplication Quiz</h1>
+            <button id="start-btn" class="btn">start Quiz</button>
+        </div>
+        <div id="question-container" class="hide">
+            <div id="progress-bar" class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <div id="question-number"></div>
+            <div id="question"></div>
+            <div id="answer-buttons" class="btn-container"></div>
+            <div id="timer"></div>
+            <div id="streak"></div>
+            <div id="fast-answer" class="hide"></div>
+        </div>
+        <div id="score-container" class="hide">
+            <h1>Quiz Completed!</h1>
+            <h2 id="final-score"></h2>
+            <p id="kudos" class="kudos"></p>
+            <button id="restart-btn" class="btn">Restart Quiz</button>
+        </div>
+	<div id="feedback-popup" class="hide">
+    		<h2>Quiz Completed!</h2>
+    		<p>Your quiz is completed. Click OK to see detailed feedback.</p>
+    		<button id="feedback-ok-btn" class="btn">OK</button>
+	</div>
+
+        <div id="feedback-container" class="hide">
+            <h2>Feedback</h2>
+            <ul id="feedback-list"></ul>
+        </div>
+    </div>
+    <div id="confetti"></div>
+    <script src="quiz.js"></script>
+</body>
+</html>
